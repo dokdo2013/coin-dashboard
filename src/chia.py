@@ -18,6 +18,7 @@ while True:
 
         link = 'https://do.yatchacha.com/index.php/api/chia_data/update?key=3600&plots=' + str(plot_count) + '&capacity=' + str(format(disk_use, ".2f"))
         requests.get(link)
+        print(link)
     except:
         time.sleep(10)
     else:
