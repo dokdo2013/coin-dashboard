@@ -737,8 +737,9 @@
         async function sejuUpdate(coin, target) {
             if(coin == 'xch') {
                 if(target == 'balance') {
+                    const xchBalanceXch = 0;
 
-                    if(plots > 0) {
+                    if(xchBalanceXch > 0) {
                         $("#xch-balance-xch").text(0);
                         $("#xch-balance-usdt").text(0);
                         setStatusTarget("status-xch-balance", "ok");
