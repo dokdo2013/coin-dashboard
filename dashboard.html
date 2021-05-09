@@ -157,6 +157,45 @@
                     <span id="xch-flag-text" class="flag-text noto"></span>
                 </div>
                 <div class="coin-inner">
+
+                    <div id="xch-balance" class="card">
+                        <span id="xch-balance-xch" class="noto-black" style="font-size: 24px"></span> <span class="noto-thin">XCH</span><br>
+                        <span>=&nbsp;&nbsp;</span><span id="xch-balance-usdt" class="noto-black" style="font-size: 24px"></span> <span class="noto-thin">USDT</span><br>
+                        <span id="status-xch-balance" class="flag-color-green flag-color-sm" style="margin-top:9px; display: inline-block;"></span>
+                        <span class="noto-thin" style="margin-top:9px; display: inline-block; font-size: 20px;">Balance</span>
+                        <span class="noto-thin" style="margin-top:9px; display: inline-block; font-size: 12px;">잔고</span><br>
+                        <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
+                        <span id="xch-balance-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
+                    </div>
+
+                    <div id="xch-plots" class="card">
+                        <span id="xch-plots-count" class="noto-black" style="font-size: 24px"></span> <span class="noto-thin">Plots</span><br>
+                        <span>=&nbsp;&nbsp;</span><span id="xch-plots-tb" class="noto-black" style="font-size: 24px"></span> <span class="noto-thin">TB</span><br>
+                        <span id="status-xch-plots" class="flag-color-green flag-color-sm" style="margin-top:9px; display: inline-block;"></span>
+                        <span class="noto-thin" style="margin-top:9px; display: inline-block; font-size: 20px;">Plots</span>
+                        <span class="noto-thin" style="margin-top:9px; display: inline-block; font-size: 12px;">플롯 수</span><br>
+                        <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
+                        <span id="xch-plots-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
+                    </div>
+
+                    <div id="xch-towin" class="card">
+                        <span id="xch-towin-data" class="noto-black" style="font-size: 28px"></span> <span class="noto-thin">Months</span><br>
+                        <span id="status-xch-towin" class="flag-color-green flag-color-sm" style="margin-top:39px; display: inline-block;"></span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 20px;">Time to win</span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 12px;">잔여시간</span><br>
+                        <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
+                        <span id="xch-towin-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
+                    </div>
+
+                    <div id="xch-price" class="card">
+                        <span id="xch-price-data" class="noto-black" style="font-size: 28px"></span> <span class="noto-thin">USDT</span><br>
+                        <span id="status-xch-price" class="flag-color-green flag-color-sm" style="margin-top:39px; display: inline-block;"></span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 20px;">Price</span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 12px;">XCH-USDT</span><br>
+                        <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
+                        <span id="xch-price-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
+                    </div>
+
                     <div id="xch-unavailable" style="display: none">
                         <p class="noto-medium" style="font-size: 20px">Data temporarily unavailable</p>
                         <p class="noto-medium" style="font-size: 14px">현재 데이터를 이용할 수 없습니다</p>
@@ -207,6 +246,16 @@
                         <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 12px;">ETH-KRW Upbit</span><br>
                         <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
                         <span id="eth-price-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
+                    </div>
+
+                    <div id="eth-gputemp" class="card">
+                        <span id="eth-gputemp-data" class="noto-black" style="font-size: 28px"></span> <span class="noto-thin">°C</span><br>
+                        <!-- <span>=&nbsp;&nbsp;</span><span class="noto-black" style="font-size: 24px">78,032</span> <span class="noto-thin">KRW</span><br> -->
+                        <span id="status-eth-gputemp" class="flag-color-green flag-color-sm" style="margin-top:39px; display: inline-block;"></span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 20px;">GPU Temp.</span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 12px;">GPU 온도</span><br>
+                        <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
+                        <span id="eth-gputemp-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
                     </div>
 
                     <div id="eth-unavailable" style="display: none">
@@ -494,7 +543,8 @@
                     .done(function (response) {
                         let res = response;
                         let res_json = JSON.parse(res);
-                        now_balance = res_json[0].trade_price;
+                        // console.log(res_json);
+                        now_balance = res_json.price;
                     })
                     .fail(function (response) {
                         now_balance = 0;
@@ -576,28 +626,46 @@
             let xmrCount = 0;
 
             
+            if( $("#status-xch-balance").hasClass("flag-color-green") ) {
+                xchCount++;
+            } if( $("#status-xch-plots").hasClass("flag-color-green") ) {
+                xchCount++;
+            } if( $("#status-xch-towin").hasClass("flag-color-green") ) {
+                xchCount++;
+            } if( $("#status-xch-price").hasClass("flag-color-green") ) {
+                xchCount++;
+            }
+            
             if( $("#status-eth-balance").hasClass("flag-color-green") ) {
                 ethCount++;
             } if( $("#status-eth-hashrate").hasClass("flag-color-green") ) {
                 ethCount++;
             } if( $("#status-eth-price").hasClass("flag-color-green") ) {
                 ethCount++;
+            } if( $("#status-eth-gputemp").hasClass("flag-color-green") ) {
+                ethCount++;
             }
-            
+
             if( $("#status-xmr-balance").hasClass("flag-color-green") ) {
                 xmrCount++;
             } if( $("#status-xmr-hashrate").hasClass("flag-color-green") ) {
                 xmrCount++;
             } if( $("#status-xmr-price").hasClass("flag-color-green") ) {
                 xmrCount++;
+            } 
+            
+            
+            if(xchCount == 0) {
+                setStatus('xch', 'error');
+            } else if(xchCount == 4) {
+                setStatus('xch', 'ok');
+            } else {
+                setStatus('xch', 'warning');
             }
-            
-            
-            setStatus('xch', 'error');
 
             if(ethCount == 0) {
                 setStatus('eth', 'error');
-            } else if(ethCount == 3) {
+            } else if(ethCount == 4) {
                 setStatus('eth', 'ok');
             } else {
                 setStatus('eth', 'warning');
@@ -614,7 +682,26 @@
 
         async function sejuUpdate(coin, target) {
             if(coin == 'xch') {
+                if(target == 'balance') {
+                    setStatusTarget("status-xch-balance", "error");
+                } else if(target == 'plots') {
+                    setStatusTarget("status-xch-plots", "error");
+                } else if(target == 'towin') {
+                    setStatusTarget("status-xch-towin", "error");
+                } else if(target == 'price') {
+                    let xchPrice = await getPrice('xch');
+                    if(xchPrice > 0) {
+                        $("#xch-price-data").text(addComma(xchPrice));
+                        setStatusTarget("status-xch-price", "ok");
+                    } else {
+                        // $("#xch-price-data").text(xchPrice);
+                        setStatusTarget("status-xch-price", "error");
+                    }
+                    $("#xch-price-time").text(getTime());
+                    // updateEth($("#xch-balance-xch").text());
 
+                    // setStatusTarget("status-xch-price", "error");
+                }
             } else if(coin == 'eth') {
                 if(target == 'balance') {
                     let ethBalanceEth = await getBalance('eth');
@@ -651,6 +738,8 @@
                     }
                     $("#eth-price-time").text(getTime());
                     updateEth($("#eth-balance-eth").text());
+                } else if(target == 'gputemp') {
+                    setStatusTarget("status-eth-gputemp", "error");
                 }
             } else if(coin == 'xmr') {
                 if(target == 'balance') {
@@ -697,26 +786,40 @@
             setTimeout(() => {
                 sejuLoad();
                 setTime();
+                sejuUpdate('xch', 'price');
                 sejuUpdate('eth', 'price');
                 sejuUpdate('xmr', 'price');
+
+                sejuUpdate('xch', 'balance');
+                sejuUpdate('xch', 'plots');
+                sejuUpdate('xch', 'towin');
+                
                 sejuUpdate('eth', 'balance');
                 sejuUpdate('eth', 'hashrate');
-                sejuUpdate('xmr', 'hashrate');
+                sejuUpdate('eth', 'gputemp');
+
                 sejuUpdate('xmr', 'balance');
+                sejuUpdate('xmr', 'hashrate');
             }, 0);
 
             setInterval(setTime, 1000);
             setInterval(sejuLoad, 1000);
-            // setInterval(sejuUpdate, 5000, "xch");
+            setInterval(sejuUpdate, 5000, "xch", "price");
+            setInterval(sejuUpdate, 500, "eth", "price");
+            setInterval(sejuUpdate, 3000, "xmr", "price");
+            
+            setInterval(sejuUpdate, 10000, "xch", "balance");
+            setInterval(sejuUpdate, 60000, "xch", "plots");
+            setInterval(sejuUpdate, 90000, "xch", "towin");
+            
             setInterval(sejuUpdate, 300000, "eth", "balance");
             setInterval(sejuUpdate, 300000, "eth", "hashrate");
-            setInterval(sejuUpdate, 300000, "xmr", "hashrate");
-            setInterval(sejuUpdate, 500, "eth", "price");
+            setInterval(sejuUpdate, 10000, "eth", "gputemp");
+            
             setInterval(sejuUpdate, 300000, "xmr", "balance");
-            setInterval(sejuUpdate, 3000, "xmr", "price");
-            // setInterval(sejuUpdate, 5000, "xmr");
+            setInterval(sejuUpdate, 300000, "xmr", "hashrate");
 
-            $("#xch-unavailable").show();
+            // $("#xch-unavailable").show();
         });
     </script>
 </body>
