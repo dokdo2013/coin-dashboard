@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COIN Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <style>
+        .noto-thin{ font-family: 'Noto Sans KR', sans-serif; font-weight: 100; }
+        .noto-light{ font-family: 'Noto Sans KR', sans-serif; font-weight: 300; }
+        .noto{ font-family: 'Noto Sans KR', sans-serif; font-weight: 400; }
+        .noto-medium{ font-family: 'Noto Sans KR', sans-serif; font-weight: 500; }
+        .noto-bold{ font-family: 'Noto Sans KR', sans-serif; font-weight: 700; }
+        .noto-black{ font-family: 'Noto Sans KR', sans-serif; font-weight: 900; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: rgba(0,0,0,0.9);
+        }
+        #main {
+            width: 1280px;
+            height: 720px;
+            margin: 0 auto;
+            /* background-color: rgba(0,0,0,0.9); */
+        }
+        div {
+            margin: 0;
+        }
+        span,p {
+            color: white;
+        }
+        #title {
+            padding: 10px 0 0 10px;
+            height: 50px;
+            display: inline-block;
+        }
+        #title span {
+            line-height: 20px;
+        }
+        #time {
+            padding: 10px 10px 0 0;
+            /* float: right; */
+            /* height: 50px; */
+            position: absolute;
+            top: 8px;
+            right: 95px;
+            display: inline-block;
+        }
+        #now-time {
+            color: white;
+            font-size: 20px;
+        }
+        #player {
+            float: right
+        }
+
+        .logo-wrapper {
+            display: inline-block;
+            width: 34px;
+            height: 34px;
+            background-color: white;
+            text-align: center;
+            border-radius: 50px;
+        }
+        .coin-logo {
+            height: 30px;
+            margin-top: 2px;
+        }
+        .wrapper {
+            padding: 10px;
+            min-height: 150px
+        }
+        .coin-top {
+            display: inline-block;
+            width: 220px;
+            position: fixed;
+        }
+        .coin-inner {
+            display: inline-block;
+            padding-left: 250px;
+            padding-right: 10px;
+        }
+        .flag {
+            position: absolute;
+        }
+        .flag-color {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 40px;
+        }
+        .flag-color-sm {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 40px;
+        }
+        .flag-color-red {
+            background-color: rgba(255,30,30,0.9);
+        }
+        .flag-color-green {
+            background-color: rgba(30,255,30,0.9);
+        }
+        .flag-color-orange {
+            background-color: rgba(255, 180, 0, 0.9);
+        }
+        .flag-text {
+            font-size: 20px;
+            vertical-align: super;
+        }
+        .card {
+            width: 180px;
+            height: 120px;
+            padding: 10px;
+            border: 1px solid white;
+            border-radius: 10px;
+            margin-right: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+
+        <div id="top">
+            <div id="title">
+                <span class="noto-light" style="font-size: 16px">SEJUARI</span><br>
+                <span class="noto-bold" style="font-size: 28px">COIN <span class="noto-thin">DASHBOARD</span> <span class="noto-thin" style="font-size: 16px">코인 대시보드</span></span>
+            </div>
+            <div id="player">
+                <iframe width="90" height="60" src="https://www.youtube.com/embed/9ipQdFrQ7_0?controls=0&autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div id="time">
+                <span id="now-time" class="noto-thin"></span>
+            </div>
+        </div>
+    
+        <div id="center">
+            <hr>
+            <div id="xch-wrapper" class="wrapper">
+                <div class="coin-top">
+                    <div class="logo-wrapper">
+                        <img src="https://repository-images.githubusercontent.com/197153676/046f4f00-e93a-11ea-8c70-21e6d3a2d09b" alt="Ethereum Logo" class="coin-logo">
+                    </div>
+                    <span class="noto-black" style="font-size: 30px">XCH</span>
+                    <br>
+                    <span class="noto-thin" style="font-size: 20px;">CHIA Network</span> <span class="noto-thin" style="font-size: 14px;">(치아코인)</span>
+                </div>
+                <div id="xch-flag" class="flag" style="top: 200px">
+                    <div id="xch-flag-color" class="flag-color"></div>
+                    <span id="xch-flag-text" class="flag-text noto"></span>
+                </div>
+                <div class="coin-inner">
+                    <div id="xch-unavailable" style="display: none">
+                        <p class="noto-medium" style="font-size: 20px">Data temporarily unavailable</p>
+                        <p class="noto-medium" style="font-size: 14px">현재 데이터를 이용할 수 없습니다</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div id="eth-wrapper" class="wrapper">
+                <div class="coin-top">
+                    <div class="logo-wrapper">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/628px-Ethereum_logo_2014.svg.png" alt="Ethereum Logo" class="coin-logo">
+                    </div>
+                    <span class="noto-black" style="font-size: 30px">ETH</span>
+                    <br>
+                    <span class="noto-thin" style="font-size: 20px;">Ethereum</span> <span class="noto-thin" style="font-size: 14px;">(이더리움)</span>
+                </div>
+                <div id="eth-flag" class="flag" style="top: 388px">
+                    <div id="eth-flag-color" class="flag-color"></div>
+                    <span id="eth-flag-text" class="flag-text noto"></span>
+                </div>
+                <div class="coin-inner">
+
+                    <div id="eth-balance" class="card">
+                        <span id="eth-balance-eth" class="noto-black" style="font-size: 24px"></span> <span class="noto-thin">ETH</span><br>
+                        <span>=&nbsp;&nbsp;</span><span id="eth-balance-krw" class="noto-black" style="font-size: 24px"></span> <span class="noto-thin">KRW</span><br>
+                        <span id="status-eth-balance" class="flag-color-green flag-color-sm" style="margin-top:9px; display: inline-block;"></span>
+                        <span class="noto-thin" style="margin-top:9px; display: inline-block; font-size: 20px;">Balance</span>
+                        <span class="noto-thin" style="margin-top:9px; display: inline-block; font-size: 12px;">잔고</span><br>
+                        <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
+                        <span id="eth-balance-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
+                    </div>
+                    
+                    <div id="eth-hashrate" class="card">
+                        <span id="eth-hashrate-data" class="noto-black" style="font-size: 28px"></span> <span class="noto-thin">MH/s</span><br>
+                        <!-- <span>=&nbsp;&nbsp;</span><span class="noto-black" style="font-size: 24px">78,032</span> <span class="noto-thin">KRW</span><br> -->
+                        <span id="status-eth-hashrate" class="flag-color-green flag-color-sm" style="margin-top:39px; display: inline-block;"></span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 20px;">HashRate</span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 12px;">해시레이트</span><br>
+                        <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
+                        <span id="eth-hashrate-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
+                    </div>
+
+                    <div id="eth-price" class="card">
+                        <span id="eth-price-data" class="noto-black" style="font-size: 28px"></span> <span class="noto-thin">KRW</span><br>
+                        <!-- <span>=&nbsp;&nbsp;</span><span class="noto-black" style="font-size: 24px">78,032</span> <span class="noto-thin">KRW</span><br> -->
+                        <span id="status-eth-price" class="flag-color-green flag-color-sm" style="margin-top:39px; display: inline-block;"></span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 20px;">Price</span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 12px;">ETH-KRW Upbit</span><br>
+                        <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
+                        <span id="eth-price-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
+                    </div>
+
+                    <div id="eth-unavailable" style="display: none">
+                        <p class="noto-medium" style="font-size: 20px">Data temporarily unavailable</p>
+                        <p class="noto-medium" style="font-size: 14px">현재 데이터를 이용할 수 없습니다</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div id="xmr-wrapper" class="wrapper">
+                <div class="coin-top">
+                    <div class="logo-wrapper">
+                        <img src="https://cdn.worldvectorlogo.com/logos/monero.svg" alt="Ethereum Logo" class="coin-logo">
+                    </div>
+                    <span class="noto-black" style="font-size: 30px">XMR</span>
+                    <br>
+                    <span class="noto-thin" style="font-size: 20px;">Monero</span> <span class="noto-thin" style="font-size: 14px;">(모네로)</span>
+                </div>
+                <div id="xmr-flag" class="flag" style="top: 575px">
+                    <div id="xmr-flag-color" class="flag-color"></div>
+                    <span id="xmr-flag-text" class="flag-text noto"></span>
+                </div>
+                <div class="coin-inner">
+
+                    <div id="xmr-balance" class="card">
+                        <span id="xmr-balance-xmr" class="noto-black" style="font-size: 24px"></span> <span class="noto-thin">XMR</span><br>
+                        <span>=&nbsp;&nbsp;</span><span id="xmr-balance-usdt" class="noto-black" style="font-size: 24px"></span> <span class="noto-thin">USDT</span><br>
+                        <span id="status-xmr-balance" class="flag-color-green flag-color-sm" style="margin-top:9px; display: inline-block;"></span>
+                        <span class="noto-thin" style="margin-top:9px; display: inline-block; font-size: 20px;">Balance</span>
+                        <span class="noto-thin" style="margin-top:9px; display: inline-block; font-size: 12px;">잔고</span><br>
+                        <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
+                        <span id="xmr-balance-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
+                    </div>
+                    
+                    <div id="xmr-hashrate" class="card">
+                        <span id="xmr-hashrate-data" class="noto-black" style="font-size: 28px"></span> <span class="noto-thin">KH/s</span><br>
+                        <!-- <span>=&nbsp;&nbsp;</span><span class="noto-black" style="font-size: 24px">78,032</span> <span class="noto-thin">KRW</span><br> -->
+                        <span id="status-xmr-hashrate" class="flag-color-green flag-color-sm" style="margin-top:39px; display: inline-block;"></span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 20px;">HashRate</span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 12px;">해시레이트</span><br>
+                        <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
+                        <span id="xmr-hashrate-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
+                    </div>
+
+                    <div id="xmr-price" class="card">
+                        <span id="xmr-price-data" class="noto-black" style="font-size: 28px"></span> <span class="noto-thin">USDT</span><br>
+                        <span id="status-xmr-price" class="flag-color-green flag-color-sm" style="margin-top:39px; display: inline-block;"></span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 20px;">Price</span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 12px;">XMR-USDT Bianance</span><br>
+                        <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
+                        <span id="xmr-price-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
+                    </div>
+
+                    <div id="xmr-unavailable" style="display: none">
+                        <p class="noto-medium" style="font-size: 20px">Data temporarily unavailable</p>
+                        <p class="noto-medium" style="font-size: 14px">현재 데이터를 이용할 수 없습니다</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+    </div>
+
+
+    <script>
+        function addComma(num) {
+            var regexp = /\B(?=(\d{3})+(?!\d))/g;
+            return num.toString().replace(regexp, ',');
+        }
+ 
+        function getTime() {
+            let today = new Date();   
+
+            let year = today.getFullYear(); // 년도
+            let month = today.getMonth() + 1;  // 월
+            let date = today.getDate();  // 날짜
+            let hours = today.getHours(); // 시
+            let minutes = today.getMinutes();  // 분
+            let seconds = today.getSeconds();  // 초
+            if(hours.toString().length == 1) {
+                hours = "0" + hours;
+            }
+            if(minutes.toString().length == 1) {
+                minutes = "0" + minutes;
+            }
+            if(seconds.toString().length == 1) {
+                seconds = "0" + seconds;
+            }
+
+            const nowDate = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
+            return nowDate;
+        }
+
+        function setTime() {
+            let today = new Date();   
+            const yoil = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+            let year = today.getFullYear(); // 년도
+            let month = today.getMonth() + 1;  // 월
+            let date = today.getDate();  // 날짜
+            let hours = today.getHours(); // 시
+            let minutes = today.getMinutes();  // 분
+            let seconds = today.getSeconds();  // 초
+            if(hours.toString().length == 1) {
+                hours = "0" + hours;
+            }
+            if(minutes.toString().length == 1) {
+                minutes = "0" + minutes;
+            }
+            if(seconds.toString().length == 1) {
+                seconds = "0" + seconds;
+            }
+            let day = today.getDay();  // 요일
+
+            const nowDate = year + "-" + month + "-" + date + "(" + yoil[day] + ") " + hours + ":" + minutes + ":" + seconds;
+            $("#now-time").html(nowDate);
+            // console.log(nowDate);
+            // return Date.now();
+        }
+
+        function setStatus(coin, status) {
+            // status : 'Ok'(정상 / Green) / 'Warning'(주의 / Orange) / 'Error'(오류 / Red)
+            const flagStatus = ['Ok', 'Warning', 'Error'];
+            if(coin == 'xch') {
+                flagColorTarget = "#xch-flag-color";
+                flagTextTarget = "#xch-flag-text";
+            } else if(coin == 'eth') {
+                flagColorTarget = "#eth-flag-color";
+                flagTextTarget = "#eth-flag-text";
+            } else if(coin == 'xmr') {
+                flagColorTarget = "#xmr-flag-color";
+                flagTextTarget = "#xmr-flag-text";
+            }
+
+            if(status == 'ok'){
+                $(flagColorTarget).removeClass("flag-color-orange");
+                $(flagColorTarget).removeClass("flag-color-red");
+                $(flagColorTarget).addClass("flag-color-green");
+                $(flagTextTarget).text(flagStatus[0]);
+            }else if(status == 'warning'){
+                $(flagColorTarget).removeClass("flag-color-green");
+                $(flagColorTarget).removeClass("flag-color-red");
+                $(flagColorTarget).addClass("flag-color-orange");
+                $(flagTextTarget).text(flagStatus[1]);
+            }else if(status == 'error'){
+                $(flagColorTarget).removeClass("flag-color-green");
+                $(flagColorTarget).removeClass("flag-color-orange");
+                $(flagColorTarget).addClass("flag-color-red");
+                $(flagTextTarget).text(flagStatus[2]);
+            }
+        }
+
+        function setStatusTarget(target, status) {
+            flagTarget = "#" + target;
+
+            if(status == 'ok'){
+                $(flagTarget).removeClass("flag-color-orange");
+                $(flagTarget).removeClass("flag-color-red");
+                $(flagTarget).addClass("flag-color-green");
+            }else if(status == 'warning'){
+                $(flagTarget).removeClass("flag-color-green");
+                $(flagTarget).removeClass("flag-color-red");
+                $(flagTarget).addClass("flag-color-orange");
+            }else if(status == 'error'){
+                $(flagTarget).removeClass("flag-color-green");
+                $(flagTarget).removeClass("flag-color-orange");
+                $(flagTarget).addClass("flag-color-red");
+            }
+        }
+
+        function getBalance(coin) {
+            if(coin == 'eth') {
+                var settings = {
+                    "url": "https://do.yatchacha.com/index.php/api/balance/eth",
+                    "method": "GET",
+                    "timeout": 0,
+                    "async": false
+                };
+
+                let now_balance;
+                try {
+                    $.ajax(settings)
+                    .done(function (response) {
+                        let res = response;
+                        let res_json = JSON.parse(res);
+                        now_balance = res_json.getuserbalance.data.confirmed;
+                    })
+                    .fail(function (response) {
+                        now_balance = 0;
+                    });
+                    return now_balance;
+                } catch (error) {
+                    return 0;
+                }
+            } else if(coin == 'xmr') {
+                var settings = {
+                    "url": "https://do.yatchacha.com/index.php/api/balance/xmr",
+                    "method": "GET",
+                    "timeout": 0,
+                    "async": false
+                };
+
+                let now_balance;
+                try {
+                    $.ajax(settings)
+                    .done(function (response) {
+                        let res = response;
+                        let res_json = JSON.parse(res);
+                        now_balance = res_json.getuserbalance.data.confirmed;
+                    })
+                    .fail(function (response) {
+                        now_balance = 0;
+                    });
+                    return now_balance;
+                } catch (error) {
+                    return 0;
+                }
+            }
+            
+        }
+
+        function getHashRate(coin) {
+            if(coin == 'eth') {
+                var settings = {
+                    "url": "https://do.yatchacha.com/index.php/api/hashrate/eth",
+                    "method": "GET",
+                    "timeout": 0,
+                    "async": false
+                };
+
+                let now_balance;
+                try {
+                    $.ajax(settings)
+                    .done(function (response) {
+                        let res = response;
+                        let res_json = JSON.parse(res);
+                        now_balance = res_json.getuserhashrate.data;
+                    })
+                    .fail(function (response) {
+                        now_balance = 0;
+                    });
+                    return now_balance;
+                } catch (error) {
+                    return 0;
+                }
+            } else if(coin == 'xmr') {
+                var settings = {
+                    "url": "https://do.yatchacha.com/index.php/api/hashrate/xmr",
+                    "method": "GET",
+                    "timeout": 0,
+                    "async": false
+                };
+
+                let now_balance;
+                try {
+                    $.ajax(settings)
+                    .done(function (response) {
+                        let res = response;
+                        let res_json = JSON.parse(res);
+                        now_balance = res_json.getuserhashrate.data;
+                    })
+                    .fail(function (response) {
+                        now_balance = 0;
+                    });
+                    return now_balance;
+                } catch (error) {
+                    return 0;
+                }
+            }
+        }
+        
+        function getPrice(coin) {
+            if(coin == 'xch') {
+                var settings = {
+                    "url": "https://do.yatchacha.com/index.php/api/price/xch",
+                    "method": "GET",
+                    "timeout": 0,
+                    "async": false
+                };
+                
+                let now_balance;
+                try {
+                    $.ajax(settings)
+                    .done(function (response) {
+                        let res = response;
+                        let res_json = JSON.parse(res);
+                        now_balance = res_json[0].trade_price;
+                    })
+                    .fail(function (response) {
+                        now_balance = 0;
+                    });
+                    return now_balance;
+                } catch (error) {
+                    return 0;
+                }
+            } else if(coin == 'eth') {
+                var settings = {
+                    "url": "https://do.yatchacha.com/index.php/api/price/eth",
+                    "method": "GET",
+                    "timeout": 0,
+                    "async": false
+                };
+                
+                let now_balance;
+                try {
+                    $.ajax(settings)
+                    .done(function (response) {
+                        let res = response;
+                        let res_json = JSON.parse(res);
+                        now_balance = res_json[0].trade_price;
+                    })
+                    .fail(function (response) {
+                        now_balance = 0;
+                    });
+                    return now_balance;
+                } catch (error) {
+                    return 0;
+                }
+            } else if(coin == 'xmr') {
+                var settings = {
+                    "url": "https://do.yatchacha.com/index.php/api/price/xmr",
+                    "method": "GET",
+                    "timeout": 0,
+                    "async": false
+                };
+                
+                let now_balance;
+                try {
+                    $.ajax(settings)
+                    .done(function (response) {
+                        let res = response;
+                        let res_json = JSON.parse(res);
+                        // console.log(res_json);
+                        for(let i=400;i<res_json.length;i++) {
+                            if (res_json[i].symbol == 'XMRUSDT') {
+                                now_balance = res_json[i].price;
+                                // console.log(i);
+                                break;
+                            }
+                        }
+                        // now_balance = res_json[0].trade_price;
+                    })
+                    .fail(function (response) {
+                        now_balance = 0;
+                    });
+                    return now_balance;
+                } catch (error) {
+                    return 0;
+                }
+            }
+
+        }
+
+        function updateEth(ethBalanceEth) {
+            let ethPrice = $("#eth-price-data").text().replace(/,/g, '');
+            $("#eth-balance-krw").text(addComma(parseInt(ethBalanceEth * parseInt(ethPrice))));
+        }
+        function updateXmr(xmrBalanceXmr) {
+            let ethPrice = $("#xmr-price-data").text().replace(/,/g, '');
+            $("#xmr-balance-usdt").text(Math.round((xmrBalanceXmr * parseInt(ethPrice)) * 1000) / 1000);
+        }
+
+        function sejuLoad() {
+            let xchCount = 0;
+            let ethCount = 0;
+            let xmrCount = 0;
+
+            
+            if( $("#status-eth-balance").hasClass("flag-color-green") ) {
+                ethCount++;
+            } if( $("#status-eth-hashrate").hasClass("flag-color-green") ) {
+                ethCount++;
+            } if( $("#status-eth-price").hasClass("flag-color-green") ) {
+                ethCount++;
+            }
+            
+            if( $("#status-xmr-balance").hasClass("flag-color-green") ) {
+                xmrCount++;
+            } if( $("#status-xmr-hashrate").hasClass("flag-color-green") ) {
+                xmrCount++;
+            } if( $("#status-xmr-price").hasClass("flag-color-green") ) {
+                xmrCount++;
+            }
+            
+            
+            setStatus('xch', 'error');
+
+            if(ethCount == 0) {
+                setStatus('eth', 'error');
+            } else if(ethCount == 3) {
+                setStatus('eth', 'ok');
+            } else {
+                setStatus('eth', 'warning');
+            }
+
+            if(xmrCount == 0) {
+                setStatus('xmr', 'error');
+            } else if(xmrCount == 3) {
+                setStatus('xmr', 'ok');
+            } else {
+                setStatus('xmr', 'warning');
+            }
+        }
+
+        async function sejuUpdate(coin, target) {
+            if(coin == 'xch') {
+
+            } else if(coin == 'eth') {
+                if(target == 'balance') {
+                    let ethBalanceEth = await getBalance('eth');
+                    // console.log(ethBalanceEth);
+                    if(ethBalanceEth > 0.0) {
+                        $("#eth-balance-eth").text(ethBalanceEth);
+                        updateEth(ethBalanceEth);
+                        setStatusTarget("status-eth-balance", "ok");
+                    } else {
+                        $("#eth-balance-eth").text(ethBalanceEth);
+                        setStatusTarget("status-eth-balance", "error");
+                    }
+                    $("#eth-balance-time").text(getTime());
+                } else if(target == 'hashrate') {
+                    let ethHashRateEth = await getHashRate('eth');
+                    ethHashRateEth = Math.round(ethHashRateEth / 1000 * 100) / 100;
+                    if(ethHashRateEth > 0.0) {
+                        $("#eth-hashrate-data").text(ethHashRateEth);
+                        // updateEth(ethHashRateEth);
+                        setStatusTarget("status-eth-hashrate", "ok");
+                    } else {
+                        $("#eth-hashrate-eth").text(ethHashRateEth);
+                        setStatusTarget("status-eth-hashrate", "error");
+                    }
+                    $("#eth-hashrate-time").text(getTime());
+                } else if(target == 'price') {
+                    let ethPrice = await getPrice('eth');
+                    if(ethPrice > 0) {
+                        $("#eth-price-data").text(addComma(ethPrice));
+                        setStatusTarget("status-eth-price", "ok");
+                    } else {
+                        // $("#eth-price-data").text(ethPrice);
+                        setStatusTarget("status-eth-price", "error");
+                    }
+                    $("#eth-price-time").text(getTime());
+                    updateEth($("#eth-balance-eth").text());
+                }
+            } else if(coin == 'xmr') {
+                if(target == 'balance') {
+                    const xmrBalanceXmr = await getBalance('xmr');
+                    if(xmrBalanceXmr > 0) {
+                        $("#xmr-balance-xmr").text(xmrBalanceXmr);
+                        setStatusTarget("status-xmr-balance", "ok");
+                    } else {
+                        $("#xmr-balance-xmr").text(xmrBalanceXmr);
+                        setStatusTarget("status-xmr-balance", "error");
+                    }
+                    $("#xmr-balance-time").text(getTime());
+                } else if(target == 'hashrate') {
+                    let xmrHashRateXmr = await getHashRate('xmr');
+                    // xmrHashRateXmr = Math.round(xmrHashRateXmr / 1000 * 100) / 100;
+                    if(xmrHashRateXmr > 0.0) {
+                        $("#xmr-hashrate-data").text(xmrHashRateXmr);
+                        // updateXmr(xmrHashRateXmr);
+                        setStatusTarget("status-xmr-hashrate", "ok");
+                    } else {
+                        $("#xmr-hashrate-eth").text(xmrHashRateXmr);
+                        setStatusTarget("status-xmr-hashrate", "error");
+                    }
+                    $("#xmr-hashrate-time").text(getTime());
+                } else if(target == 'price') {
+                    let xmrPrice = await getPrice('xmr');
+                    xmrPrice = Math.round(xmrPrice * 100 ) / 100;
+                    // ethHashRateEth = Math.round(ethHashRateEth / 1000 * 100) / 100;
+                    if(xmrPrice > 0) {
+                        $("#xmr-price-data").text(addComma(xmrPrice));
+                        setStatusTarget("status-xmr-price", "ok");
+                    } else {
+                        // $("#xmr-price-data").text(xmrPrice);
+                        setStatusTarget("status-xmr-price", "error");
+                    }
+                    $("#xmr-price-time").text(getTime());
+                    updateXmr($("#xmr-balance-xmr").text());
+                }
+            }
+        }
+
+
+        $(document).ready(function() {
+            setTimeout(() => {
+                sejuLoad();
+                setTime();
+                sejuUpdate('eth', 'price');
+                sejuUpdate('xmr', 'price');
+                sejuUpdate('eth', 'balance');
+                sejuUpdate('eth', 'hashrate');
+                sejuUpdate('xmr', 'hashrate');
+                sejuUpdate('xmr', 'balance');
+            }, 0);
+
+            setInterval(setTime, 1000);
+            setInterval(sejuLoad, 1000);
+            // setInterval(sejuUpdate, 5000, "xch");
+            setInterval(sejuUpdate, 300000, "eth", "balance");
+            setInterval(sejuUpdate, 300000, "eth", "hashrate");
+            setInterval(sejuUpdate, 300000, "xmr", "hashrate");
+            setInterval(sejuUpdate, 500, "eth", "price");
+            setInterval(sejuUpdate, 300000, "xmr", "balance");
+            setInterval(sejuUpdate, 3000, "xmr", "price");
+            // setInterval(sejuUpdate, 5000, "xmr");
+
+            $("#xch-unavailable").show();
+        });
+    </script>
+</body>
+</html>
