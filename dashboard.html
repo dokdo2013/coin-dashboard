@@ -238,16 +238,6 @@
                         <span id="eth-hashrate-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
                     </div>
 
-                    <div id="eth-price" class="card">
-                        <span id="eth-price-data" class="noto-black" style="font-size: 28px"></span> <span class="noto-thin">KRW</span><br>
-                        <!-- <span>=&nbsp;&nbsp;</span><span class="noto-black" style="font-size: 24px">78,032</span> <span class="noto-thin">KRW</span><br> -->
-                        <span id="status-eth-price" class="flag-color-green flag-color-sm" style="margin-top:39px; display: inline-block;"></span>
-                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 20px;">Price</span>
-                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 12px;">ETH-KRW Upbit</span><br>
-                        <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
-                        <span id="eth-price-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
-                    </div>
-
                     <div id="eth-gputemp" class="card">
                         <span id="eth-gputemp-data" class="noto-black" style="font-size: 28px"></span> <span class="noto-thin">°C</span><br>
                         <!-- <span>=&nbsp;&nbsp;</span><span class="noto-black" style="font-size: 24px">78,032</span> <span class="noto-thin">KRW</span><br> -->
@@ -256,6 +246,16 @@
                         <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 12px;">GPU 온도</span><br>
                         <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
                         <span id="eth-gputemp-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
+                    </div>
+
+                    <div id="eth-price" class="card">
+                        <span id="eth-price-data" class="noto-black" style="font-size: 28px"></span> <span class="noto-thin">KRW</span><br>
+                        <!-- <span>=&nbsp;&nbsp;</span><span class="noto-black" style="font-size: 24px">78,032</span> <span class="noto-thin">KRW</span><br> -->
+                        <span id="status-eth-price" class="flag-color-green flag-color-sm" style="margin-top:39px; display: inline-block;"></span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 20px;">Price</span>
+                        <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 12px;">ETH-KRW Upbit</span><br>
+                        <span class="noto-thin" style="font-size: 10px; display: inline-block;">Updated at&nbsp;</span>
+                        <span id="eth-price-time" class="noto-thin" style="font-size: 10px; display: inline-block;"></span><br>
                     </div>
 
                     <div id="eth-unavailable" style="display: none">
@@ -479,6 +479,31 @@
                     return 0;
                 }
             }
+        }
+
+        function gpu() {
+            var settings = {
+                    "url": "https://do.yatchacha.com/index.php/api/gpu/get",
+                    "method": "GET",
+                    "timeout": 0,
+                    "async": false
+                };
+
+                let temp;
+                try {
+                    $.ajax(settings)
+                    .done(function (response) {
+                        let res = response;
+                        let res_json = JSON.parse(res);
+                        temp = res_json.temperature;
+                    })
+                    .fail(function (response) {
+                        temp = 0;
+                    });
+                    return temp;
+                } catch (error) {
+                    return 0;
+                }
         }
 
         function getBalance(coin) {
@@ -825,6 +850,17 @@
                         setStatusTarget("status-eth-hashrate", "error");
                     }
                     $("#eth-hashrate-time").text(getTime());
+                } else if(target == 'gputemp') {
+                    let gpuTemp = await gpu();
+                    if(gpuTemp > 0) {
+                        $("#eth-gputemp-data").text(gpuTemp);
+                        setStatusTarget("status-eth-gputemp", "ok");
+                    } else {
+                        // $("#eth-gputemp-data").text(gpuTemp);
+                        setStatusTarget("status-eth-gputemp", "error");
+                    }
+                    $("#eth-gputemp-time").text(getTime());
+                    updateEth($("#eth-balance-eth").text());
                 } else if(target == 'price') {
                     let ethPrice = await getPrice('eth');
                     if(ethPrice > 0) {
@@ -836,8 +872,6 @@
                     }
                     $("#eth-price-time").text(getTime());
                     updateEth($("#eth-balance-eth").text());
-                } else if(target == 'gputemp') {
-                    setStatusTarget("status-eth-gputemp", "error");
                 }
             } else if(coin == 'xmr') {
                 if(target == 'balance') {

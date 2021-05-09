@@ -20,6 +20,6 @@ while True:
         requests.get(link)
         print(link)
     except:
-        time.sleep(10)
+        time.sleep(120)
     else:
-        time.sleep(10)
+        time.sleep(120)
