@@ -610,7 +610,7 @@
         function getPrice(coin) {
             if(coin == 'xch') {
                 var settings = {
-                    "url": "https://do.yatchacha.com/index.php/api/price/xch",
+                    "url": "https://do.yatchacha.com/index.php/api/price/xch_okex",
                     "method": "GET",
                     "timeout": 0,
                     "async": false
@@ -623,7 +623,13 @@
                         let res = response;
                         let res_json = JSON.parse(res);
                         // console.log(res_json);
-                        now_balance = res_json.price;
+                        for(let i=400;i<res_json.length;i++) {
+                            if (res_json[i].instrument_id == 'XCH-USDT') {
+                                now_balance = res_json[i].last;
+                                // console.log(i);
+                                break;
+                            }
+                        }
                     })
                     .fail(function (response) {
                         now_balance = 0;
