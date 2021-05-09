@@ -179,7 +179,7 @@
                     </div>
 
                     <div id="xch-towin" class="card">
-                        <span id="xch-towin-data" class="noto-black" style="font-size: 28px"></span> <span class="noto-thin">Months</span><br>
+                        <span id="xch-towin-data" class="noto-black" style="font-size: 28px"></span> <span class="noto-thin">Days</span><br>
                         <span id="status-xch-towin" class="flag-color-green flag-color-sm" style="margin-top:39px; display: inline-block;"></span>
                         <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 20px;">Time to win</span>
                         <span class="noto-thin" style="margin-top:39px; display: inline-block; font-size: 12px;">잔여시간</span><br>
@@ -424,6 +424,60 @@
                 $(flagTarget).removeClass("flag-color-green");
                 $(flagTarget).removeClass("flag-color-orange");
                 $(flagTarget).addClass("flag-color-red");
+            }
+        }
+
+        function getChia(target) {
+            if(target == 'plots') {
+                var settings = {
+                    "url": "https://do.yatchacha.com/index.php/api/chia_data/get",
+                    "method": "GET",
+                    "timeout": 0,
+                    "async": false
+                };
+
+                let plots, capacity;
+                try {
+                    $.ajax(settings)
+                    .done(function (response) {
+                        let res = response;
+                        let res_json = JSON.parse(res);
+                        plots = res_json.plots;
+                        capacity = res_json.capacity;
+                    })
+                    .fail(function (response) {
+                        plots = 0;
+                        capacity = 0;
+                    });
+                    const dt = [plots, capacity];
+                    return dt;
+                } catch (error) {
+                    return [0, 0];
+                }
+            } else if(target == 'towin') {
+                var settings = {
+                    "url": "https://do.yatchacha.com/index.php/api/price/xch",
+                    "method": "GET",
+                    "timeout": 0,
+                    "async": false
+                };
+                
+                let netspace;
+                try {
+                    $.ajax(settings)
+                    .done(function (response) {
+                        let res = response;
+                        let res_json = JSON.parse(res);
+                        // console.log(res_json);
+                        netspace = res_json.netspace;
+                    })
+                    .fail(function (response) {
+                        netspace = 0;
+                    });
+                    return netspace;
+                } catch (error) {
+                    return 0;
+                }
             }
         }
 
@@ -685,9 +739,43 @@
                 if(target == 'balance') {
                     setStatusTarget("status-xch-balance", "error");
                 } else if(target == 'plots') {
-                    setStatusTarget("status-xch-plots", "error");
+
+                    const chiaData = await getChia('plots');
+                    const plots = chiaData[0];
+                    const capacity = chiaData[1];
+
+                    if(plots > 0) {
+                        $("#xch-plots-count").text(addComma(plots));
+                        $("#xch-plots-tb").text( Math.round(capacity / 1000 * 100 ) / 100 );
+                        setStatusTarget("status-xch-plots", "ok");
+                    } else {
+                        $("#xch-plots-count").text(0);
+                        $("#xch-plots-tb").text(0);
+                        setStatusTarget("status-xch-plots", "error");
+                    }
+                    $("#xch-plots-time").text(getTime());
+
                 } else if(target == 'towin') {
-                    setStatusTarget("status-xch-towin", "error");
+
+                    const netspace = await getChia('towin');
+                    const chiaData = await getChia('plots');
+                    const capacity = chiaData[1] * 1000000000;
+                    const towin = 1-( Math.pow(  1-capacity / netspace , 4608) );
+                    let towin_temp = 0.0, towin_count = 0;
+                    while(towin_temp <= 1.0) {
+                        towin_temp += towin;
+                        towin_count++;
+                    }
+
+                    if(towin_count > 0) {
+                        $("#xch-towin-data").text(addComma(towin_count));
+                        setStatusTarget("status-xch-towin", "ok");
+                    } else {
+                        $("#xch-towin-data").text('∞');
+                        setStatusTarget("status-xch-towin", "error");
+                    }
+                    $("#xch-towin-time").text(getTime());
+
                 } else if(target == 'price') {
                     let xchPrice = await getPrice('xch');
                     if(xchPrice > 0) {
@@ -699,8 +787,6 @@
                     }
                     $("#xch-price-time").text(getTime());
                     // updateEth($("#xch-balance-xch").text());
-
-                    // setStatusTarget("status-xch-price", "error");
                 }
             } else if(coin == 'eth') {
                 if(target == 'balance') {
@@ -808,9 +894,9 @@
             setInterval(sejuUpdate, 500, "eth", "price");
             setInterval(sejuUpdate, 3000, "xmr", "price");
             
-            setInterval(sejuUpdate, 10000, "xch", "balance");
-            setInterval(sejuUpdate, 60000, "xch", "plots");
-            setInterval(sejuUpdate, 90000, "xch", "towin");
+            setInterval(sejuUpdate, 120000, "xch", "balance");
+            setInterval(sejuUpdate, 120000, "xch", "plots");
+            setInterval(sejuUpdate, 300000, "xch", "towin");
             
             setInterval(sejuUpdate, 300000, "eth", "balance");
             setInterval(sejuUpdate, 300000, "eth", "hashrate");
