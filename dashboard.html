@@ -825,22 +825,20 @@
                         $("#xch-price-data").text(addComma(xchPrice));
                         setStatusTarget("status-xch-price", "ok");
                     } else {
-                        // $("#xch-price-data").text(xchPrice);
+                        $("#xch-price-data").text(0);
                         setStatusTarget("status-xch-price", "error");
                     }
                     $("#xch-price-time").text(getTime());
-                    // updateEth($("#xch-balance-xch").text());
                 }
             } else if(coin == 'eth') {
                 if(target == 'balance') {
                     let ethBalanceEth = await getBalance('eth');
-                    // console.log(ethBalanceEth);
                     if(ethBalanceEth > 0.0) {
                         $("#eth-balance-eth").text(ethBalanceEth);
                         updateEth(ethBalanceEth);
                         setStatusTarget("status-eth-balance", "ok");
                     } else {
-                        $("#eth-balance-eth").text(ethBalanceEth);
+                        $("#eth-balance-eth").text(0);
                         setStatusTarget("status-eth-balance", "error");
                     }
                     $("#eth-balance-time").text(getTime());
@@ -849,10 +847,9 @@
                     ethHashRateEth = Math.round(ethHashRateEth / 1000 * 100) / 100;
                     if(ethHashRateEth > 0.0) {
                         $("#eth-hashrate-data").text(ethHashRateEth);
-                        // updateEth(ethHashRateEth);
                         setStatusTarget("status-eth-hashrate", "ok");
                     } else {
-                        $("#eth-hashrate-eth").text(ethHashRateEth);
+                        $("#eth-hashrate-eth").text(0.0);
                         setStatusTarget("status-eth-hashrate", "error");
                     }
                     $("#eth-hashrate-time").text(getTime());
@@ -862,7 +859,7 @@
                         $("#eth-gputemp-data").text(gpuTemp);
                         setStatusTarget("status-eth-gputemp", "ok");
                     } else {
-                        // $("#eth-gputemp-data").text(gpuTemp);
+                        $("#eth-gputemp-data").text(0);
                         setStatusTarget("status-eth-gputemp", "error");
                     }
                     $("#eth-gputemp-time").text(getTime());
@@ -873,7 +870,7 @@
                         $("#eth-price-data").text(addComma(ethPrice));
                         setStatusTarget("status-eth-price", "ok");
                     } else {
-                        // $("#eth-price-data").text(ethPrice);
+                        $("#eth-price-data").text(0);
                         setStatusTarget("status-eth-price", "error");
                     }
                     $("#eth-price-time").text(getTime());
@@ -886,31 +883,28 @@
                         $("#xmr-balance-xmr").text(xmrBalanceXmr);
                         setStatusTarget("status-xmr-balance", "ok");
                     } else {
-                        $("#xmr-balance-xmr").text(xmrBalanceXmr);
+                        $("#xmr-balance-xmr").text(0);
                         setStatusTarget("status-xmr-balance", "error");
                     }
                     $("#xmr-balance-time").text(getTime());
                 } else if(target == 'hashrate') {
                     let xmrHashRateXmr = await getHashRate('xmr');
-                    // xmrHashRateXmr = Math.round(xmrHashRateXmr / 1000 * 100) / 100;
                     if(xmrHashRateXmr > 0.0) {
                         $("#xmr-hashrate-data").text(xmrHashRateXmr);
-                        // updateXmr(xmrHashRateXmr);
                         setStatusTarget("status-xmr-hashrate", "ok");
                     } else {
-                        $("#xmr-hashrate-eth").text(xmrHashRateXmr);
+                        $("#xmr-hashrate-eth").text(0);
                         setStatusTarget("status-xmr-hashrate", "error");
                     }
                     $("#xmr-hashrate-time").text(getTime());
                 } else if(target == 'price') {
                     let xmrPrice = await getPrice('xmr');
                     xmrPrice = Math.round(xmrPrice * 100 ) / 100;
-                    // ethHashRateEth = Math.round(ethHashRateEth / 1000 * 100) / 100;
                     if(xmrPrice > 0) {
                         $("#xmr-price-data").text(addComma(xmrPrice));
                         setStatusTarget("status-xmr-price", "ok");
                     } else {
-                        // $("#xmr-price-data").text(xmrPrice);
+                        $("#xmr-price-data").text(0);
                         setStatusTarget("status-xmr-price", "error");
                     }
                     $("#xmr-price-time").text(getTime());
