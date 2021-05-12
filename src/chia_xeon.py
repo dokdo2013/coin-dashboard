@@ -7,19 +7,27 @@ from telegram_bot import tgBot
 directory_list = [
     {
         "directory": "E:/",
-        "name": "xeon-320G"
+        "name": "xeon-320G",
+        "plot_count": 0,
+        "capacity": 0.0
     },
     {
         "directory": "G:/",
-        "name": "xeon-2T"
+        "name": "xeon-2T",
+        "plot_count": 0,
+        "capacity": 0.0
     },
     {
         "directory": "H:/",
-        "name": "xeon-200G"
+        "name": "xeon-200G",
+        "plot_count": 0,
+        "capacity": 0.0
     },
     {
         "directory": "I:/",
-        "name": "xeon-8T"
+        "name": "xeon-8T",
+        "plot_count": 0,
+        "capacity": 0.0
     }
 ]
 
@@ -40,9 +48,9 @@ while True:
                     if extension == 'plot':
                         plot_count += 1
 
-            if before_plot_count != plot_count or str(before_capacity) != str(format(disk_use, ".2f")):
-                before_plot_count = plot_count
-                before_capacity = format(disk_use, ".2f")
+            if drc['plot_count'] != plot_count or str(drc['capacity']) != str(format(disk_use, ".2f")):
+                drc['plot_count'] = plot_count
+                drc['capacity'] = format(disk_use, ".2f")
 
                 link = 'https://do.yatchacha.com/index.php/api/chia_data/update?key=' + str(
                     drc['name']) + '&plots=' + str(plot_count) + '&capacity=' + str(format(disk_use, ".2f"))
