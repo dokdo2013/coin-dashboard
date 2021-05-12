@@ -4,9 +4,6 @@ import os
 import time
 from telegram_bot import tgBot
 
-before_plot_count = 0
-before_capacity = 0.0
-
 directory_list = [
     {
         "directory": "D:/",
@@ -17,6 +14,9 @@ directory_list = [
 while True:
     try:
         for drc in directory_list:
+            before_plot_count = 0
+            before_capacity = 0.0
+
             obj_Disk = psutil.disk_usage(drc['directory'])
             disk_use = obj_Disk.used / (1024.0 ** 3)
 
