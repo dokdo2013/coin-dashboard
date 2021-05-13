@@ -4,28 +4,17 @@ import os
 import time
 from telegram_bot import tgBot
 
+# 플롯이 저장된 디렉토리를 정리해 작성한다 (directory와 name만 수정)
 directory_list = [
     {
+        "directory": "D:/",
+        "name": "Example 1",
+        "plot_count": 0,
+        "capacity": 0.0
+    },
+    {
         "directory": "E:/",
-        "name": "xeon-320G",
-        "plot_count": 0,
-        "capacity": 0.0
-    },
-    {
-        "directory": "G:/",
-        "name": "xeon-2T",
-        "plot_count": 0,
-        "capacity": 0.0
-    },
-    {
-        "directory": "H:/",
-        "name": "xeon-200G",
-        "plot_count": 0,
-        "capacity": 0.0
-    },
-    {
-        "directory": "I:/",
-        "name": "xeon-8T",
+        "name": "Example 2",
         "plot_count": 0,
         "capacity": 0.0
     }
